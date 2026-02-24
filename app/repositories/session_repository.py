@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from app.database.connection import DatabaseConnection
 from app.models.session import Session
 
@@ -8,7 +8,7 @@ class SessionRepository:
         self.connection = DatabaseConnection().get_connection()
 
     def create(self, user_id: int) -> Session:
-        created_at = datetime.utcnow().isoformat()
+        created_at = datetime.now(timezone.utc).isoformat()
 
         cursor = self.connection.execute(
             """
