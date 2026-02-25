@@ -19,6 +19,21 @@ class UserRepository:
         user_id = cursor.lastrowid
         return User(user_id, name, username, password)
 
+    def find_by_id(self, user_id: int) -> User | None:
+        cursor = self.connection.execute(
+            """
+            SELECT * FROM users WHERE id = ?
+            """,
+            (user_id,),
+        )
+
+        row = cursor.fetchone()
+
+        if row is None:
+            return None
+
+        return User(row["id"], row["name"], row["username"], row["password"])
+
     def find_by_username(self, username: str) -> User | None:
         cursor = self.connection.execute(
             """
