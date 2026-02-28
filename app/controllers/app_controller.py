@@ -18,7 +18,7 @@ class AppController:
         admin_seed(self.user_service)
 
         admin = self.user_service.get_user_by_username("admin")
-        session = self.session_service.create(admin.id)
+        session = self.session_service.create_session(admin.id)
 
         self.current_user = admin
         self.current_session = session
