@@ -63,7 +63,7 @@ class UserService:
         if new_role not in [role.value for role in UserRole]:
             raise InvalidUserDataError("Invalid role.")
 
-        updated = self.user_repository.update_partial(
+        updated = self.user_repository.update_by_fields(
             user_id=target_user_id,
             role=new_role,
         )
