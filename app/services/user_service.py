@@ -6,6 +6,7 @@ from app.exceptions.user_exceptions import (
     UserAlreadyExistsError,
     UserNotFoundError,
     InvalidUserDataError,
+    InvalidPasswordError,
 )
 
 
@@ -20,6 +21,9 @@ class UserService:
 
         if existing_user:
             raise UserAlreadyExistsError("Username already exists.")
+
+        if len(password) < 6:
+            raise InvalidPasswordError("Password must be at least 6 characters long")
 
         hashed_password = PasswordService.hash_password(password)
 
