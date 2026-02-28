@@ -14,3 +14,9 @@ class SessionService:
             self.session_repository.deactivate(active_session.id)
 
         return self.session_repository.create(user_id)
+
+    def deactivate_session(self, session_id: int) -> None:
+        deactivated = self.session_repository.deactivate(session_id)
+
+        if not deactivated:
+            raise ValueError("Session not found or already inactive.")
