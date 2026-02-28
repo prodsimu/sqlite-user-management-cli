@@ -1,7 +1,6 @@
 from app.services.user_service import UserService
 from app.services.session_service import SessionService
 from app.database.seeds import admin_seed
-from app.domain.user_role import UserRole
 from app.domain.user import User
 from app.domain.session import Session
 
@@ -55,17 +54,3 @@ class AppController:
 
         self.current_session = None
         self.current_user = None
-
-    # MAIN LOOP
-
-    def main_loop(self) -> None:
-        while self.running:
-
-            if not self.current_session:
-                pass
-
-            if self.current_user.role == UserRole.USER.value:
-                pass
-
-            if self.current_user.role == UserRole.ADMIN.value:
-                pass
