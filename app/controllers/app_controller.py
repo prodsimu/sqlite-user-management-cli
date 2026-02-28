@@ -34,3 +34,12 @@ class AppController:
 
         self.current_user = user
         self.current_session = session
+
+    def logout(self) -> None:
+        if not self.current_session:
+            return
+
+        self.session_service.deactivate_session(self.current_session.id)
+
+        self.current_session = None
+        self.current_user = None
