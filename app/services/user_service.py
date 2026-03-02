@@ -47,6 +47,9 @@ class UserService:
 
         return user
 
+    def only_admin_exists(self) -> bool:
+        return self.user_repository.check_if_only_admin_exists()
+
     # UPDATE
 
     def change_user_role(
