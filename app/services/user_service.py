@@ -1,13 +1,13 @@
-from app.repositories.user_repository import UserRepository
 from app.domain.user import User
 from app.domain.user_role import UserRole
-from app.services.password_service import PasswordService
 from app.exceptions.user_exceptions import (
+    InvalidPasswordError,
+    InvalidUserDataError,
     UserAlreadyExistsError,
     UserNotFoundError,
-    InvalidUserDataError,
-    InvalidPasswordError,
 )
+from app.repositories.user_repository import UserRepository
+from app.services.password_service import PasswordService
 
 
 class UserService:
@@ -51,6 +51,31 @@ class UserService:
         return self.user_repository.check_if_only_admin_exists()
 
     # UPDATE
+
+    def update_user(
+        self,
+        user_id: int,
+        name: str | None = None,
+        username: str | None = None,
+        password: str | None = None,
+        role: UserRole | None = None,
+    ) -> bool:
+
+        if password is not None:
+            if len(password) < 6:
+                raise ValueError("Password must have at least 6 characters.")
+            password = self._hash_password(password)
+
+        if role is not None:
+            role = role.value
+
+        return self.user_repository.update_by_fields(
+            user_id=user_id,
+            name=name,
+            username=username,
+            password=password,
+            role=role,
+        )
 
     def change_user_role(
         self,
