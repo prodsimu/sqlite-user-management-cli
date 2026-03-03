@@ -1,9 +1,9 @@
-from app.domain.user_role import UserRole
-from app.services.user_service import UserService
-from app.services.session_service import SessionService
 from app.database.seeds.admin_seed import admin_seed
-from app.domain.user import User
 from app.domain.session import Session
+from app.domain.user import User
+from app.domain.user_role import UserRole
+from app.services.session_service import SessionService
+from app.services.user_service import UserService
 
 
 class AppController:
@@ -42,6 +42,20 @@ class AppController:
 
         self.current_session = None
         self.current_user = None
+
+    # UPDATE USER
+
+    def update_name(self, user_id, name) -> None:
+        self.user_service.update_user(user_id, name)
+
+    def update_username(self, user_id, username) -> None:
+        self.user_service.update_user(user_id, username)
+
+    def update_password(self, user_id, password) -> None:
+        self.user_service.update_user(user_id, password)
+
+    def update_role(self, user_id, role) -> None:
+        self.user_service.update_user(user_id, role)
 
     # UTIL
 
