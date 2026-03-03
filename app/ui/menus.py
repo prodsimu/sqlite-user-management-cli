@@ -32,3 +32,7 @@ class Menu:
     @staticmethod
     def show_error(message: str) -> None:
         print(message)
+    
+    @staticmethod
+    def shutdown_message() -> None:
+        print("Shutting down system...")
