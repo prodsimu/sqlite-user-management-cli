@@ -1,3 +1,5 @@
+import os
+
 from app.controllers.app_controller import AppController
 from app.domain.user_role import UserRole
 from app.ui.menus import Menu
@@ -61,3 +63,6 @@ class CLI:
             self.controller.login(username, password)
         except Exception as e:
             Menu.show_error(e)
+
+    def _clear_screen(self):
+        os.system("cls" if os.name == "nt" else "clear")
