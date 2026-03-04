@@ -74,8 +74,7 @@ class CLI:
             case 1:
                 self._handle_user_creation()
             case 2:
-                pass
-
+                self._handle_list_users()
             case 3:
                 pass
 
@@ -123,6 +122,10 @@ class CLI:
         self.controller.logout()
 
     # ADMIN ACTIONS
+
+    def _handle_list_users(self) -> None:
+        user_list = self.controller.list_all_users()
+        self.flash_message = Menu.show_all_users(user_list)
 
     def _handle_user_creation(self) -> None:
         name, username, password = Prompt.ask_user_data_to_creation()
