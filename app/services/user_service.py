@@ -72,7 +72,7 @@ class UserService:
         if password is not None:
             if len(password) < 6:
                 raise ValueError("Password must have at least 6 characters.")
-            password = self._hash_password(password)
+            password = PasswordService.hash_password(password)
 
         if role is not None:
             role = role.value
