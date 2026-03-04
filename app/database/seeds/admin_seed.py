@@ -1,6 +1,4 @@
-from app.domain.user import User
 from app.services.user_service import UserService
-from app.domain.user_role import UserRole
 
 
 def admin_seed(user_service: UserService):
