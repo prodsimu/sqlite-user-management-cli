@@ -39,4 +39,8 @@ class Menu:
 
     @staticmethod
     def successfully_logged_in() -> str:
-        return "logged in successfully"
+        return "Logged in successfully\n"
+
+    @staticmethod
+    def startup_message() -> str:
+        return "The system was started\n"
