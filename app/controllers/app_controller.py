@@ -48,6 +48,11 @@ class AppController:
     def create_user(self, name: str, username: str, password: str) -> None:
         self.user_service.create(name, username, password)
 
+    # READ
+
+    def list_all_users(self) -> list:
+        return self.user_service.list_users()
+
     # UPDATE USER
 
     def update_name(self, user_id, name) -> None:
