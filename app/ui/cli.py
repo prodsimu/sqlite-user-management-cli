@@ -72,7 +72,7 @@ class CLI:
             case 0:
                 self._handle_logout()
             case 1:
-                pass
+                self._handle_user_creation()
             case 2:
                 pass
 
@@ -108,8 +108,6 @@ class CLI:
         except Exception as e:
             self.flash_message = Menu.show_error(str(e))
 
-    # UTIL
-
     def _handle_login(self) -> None:
         username = Prompt.ask_username()
         password = Prompt.ask_password()
@@ -123,6 +121,19 @@ class CLI:
     def _handle_logout(self) -> None:
         self.flash_message = Menu.logout_message()
         self.controller.logout()
+
+    # ADMIN ACTIONS
+
+    def _handle_user_creation(self) -> None:
+        name, username, password = Prompt.ask_user_data_to_creation()
+
+        try:
+            self.controller.create_user(name, username, password)
+            self.flash_message = Menu.user_successfully_created_message()
+        except Exception as e:
+            self.flash_message = Menu.show_error(str(e))
+
+    # UTIL
 
     def _clear_screen(self) -> None:
         os.system("cls" if os.name == "nt" else "clear")
