@@ -1,6 +1,7 @@
 import os
 
 from app.controllers.app_controller import AppController
+from app.domain.user import User
 from app.ui.menus import Menu
 from app.ui.prompts import Prompt
 
@@ -90,7 +91,22 @@ class CLI:
                 self._handle_logout()
 
             case 1:
-                pass
+                self.change_own_password(self.controller.current_user)
+
+    # USER ACTIONS
+
+    def change_own_password(self, current_user: User) -> None:
+        new_password, confirm_new_password = Prompt.ask_new_password()
+
+        if new_password != confirm_new_password:
+            self.flash_message = Menu.password_dont_match_message()
+            return
+
+        try:
+            self.controller.update_password(current_user.id, new_password)
+            self.flash_message = Menu.password_updated_message()
+        except Exception as e:
+            self.flash_message = Menu.show_error(str(e))
 
     # UTIL
 
