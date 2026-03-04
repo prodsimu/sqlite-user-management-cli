@@ -51,7 +51,7 @@ class AppController:
     # READ
 
     def list_all_users(self) -> list:
-        return self.user_service.list_users()
+        return self.user_service.list_all_users()
 
     # UPDATE USER
 
