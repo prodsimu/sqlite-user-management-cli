@@ -48,3 +48,6 @@ class Menu:
     @staticmethod
     def startup_message() -> str:
         return "The system was started\n"
+
+    def password_do_not_match_message() -> str:
+        return "Passwords do not match\n"
