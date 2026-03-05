@@ -77,9 +77,8 @@ class CLI:
                 self._handle_list_users()
             case 3:
                 pass
-
             case 4:
-                pass
+                self._handle_delete_user()
 
     def handle_user_flow(self) -> None:
         choice = Prompt.get_choice([0, 1])
@@ -123,16 +122,25 @@ class CLI:
 
     # ADMIN ACTIONS
 
-    def _handle_list_users(self) -> None:
-        user_list = self.controller.list_all_users()
-        self.flash_message = Menu.show_all_users(user_list)
-
     def _handle_user_creation(self) -> None:
         name, username, password = Prompt.ask_user_data_to_creation()
 
         try:
             self.controller.create_user(name, username, password)
             self.flash_message = Menu.user_successfully_created_message()
+        except Exception as e:
+            self.flash_message = Menu.show_error(str(e))
+
+    def _handle_list_users(self) -> None:
+        user_list = self.controller.list_all_users()
+        self.flash_message = Menu.show_all_users(user_list)
+
+    def _handle_delete_user(self) -> None:
+        user_id = Prompt.ask_user_id()
+
+        try:
+            self.controller.delete_user(user_id)
+            self.flash_message = Menu.user_successfully_deleted_message()
         except Exception as e:
             self.flash_message = Menu.show_error(str(e))
 
