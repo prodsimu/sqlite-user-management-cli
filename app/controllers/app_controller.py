@@ -67,6 +67,11 @@ class AppController:
     def update_role(self, user_id, role) -> None:
         self.user_service.update_user(user_id=user_id, role=role)
 
+    # DELETE USER
+
+    def delete_user(self, user_id: int) -> None:
+        self.user_service.delete_user(user_id)
+
     # UTIL
 
     def was_admin_seeded(self) -> bool:
