@@ -46,3 +46,9 @@ class Prompt:
         user_id = int(input("User id: "))
 
         return user_id
+
+    @staticmethod
+    def ask_new_name() -> str:
+        new_name = input("New name: ")
+
+        return new_name
