@@ -65,6 +65,7 @@ class Menu:
     def user_successfully_deleted_message() -> str:
         return "User successfully deleted\n"
 
+    @staticmethod
     def show_all_users(user_list: list) -> str:
         formated_list = []
 
@@ -78,3 +79,7 @@ class Menu:
             formated_list.append(formated_user)
 
         return "\n".join(formated_list)
+
+    @staticmethod
+    def name_successfully_updated_message() -> str:
+        return "Name successfully updated\n"
