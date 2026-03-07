@@ -54,6 +54,10 @@ class Menu:
         return "Passwords do not match\n"
 
     @staticmethod
+    def is_new_password_same_as_current_message() -> str:
+        return "New password cannot be the same as the current password.\n"
+
+    @staticmethod
     def password_updated_message() -> str:
         return "Password updated successfully\n"
 
