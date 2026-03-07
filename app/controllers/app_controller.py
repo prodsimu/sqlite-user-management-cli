@@ -92,3 +92,8 @@ class AppController:
 
     def _get_current_user_id(self) -> int:
         return self.current_user.id
+
+    def is_new_password_same_as_current(self, password: str) -> bool:
+        return self.user_service.is_new_password_same_as_current(
+            self.current_user.id, password
+        )
