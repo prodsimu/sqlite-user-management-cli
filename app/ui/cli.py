@@ -1,5 +1,3 @@
-from xxlimited import new
-
 from app.controllers.app_controller import AppController
 from app.ui.menus import Menu
 from app.ui.prompts import Prompt
@@ -75,7 +73,7 @@ class CLI:
                 self._handle_logout()
 
             case 1:
-                self._handle_change_own_password()
+                self._handle_update_password()
 
     # MAIN LOOP ACTIONS
 
@@ -99,27 +97,7 @@ class CLI:
             print(self.flash_message, end="")
             self.flash_message = None
 
-    # USER ACTIONS
-
-    def _handle_change_own_password(self) -> None:
-
-        new_password, confirm_new_password = Prompt.ask_new_password()
-
-        if not self._verify_new_passwords_match(new_password, confirm_new_password):
-            self.flash_message = Menu.password_do_not_match_message()
-            return
-
-        if self._is_new_password_same_as_current(new_password):
-            self.flash_message = Menu.verify_new_password_matches_current_message()
-            return
-
-        def action():
-            self.controller.update_password(
-                self.controller.current_user.id, new_password
-            )
-            self.flash_message = Menu.password_updated_message()
-
-        self._execute(action)
+    # AUTH
 
     def _handle_login(self) -> None:
         username = Prompt.ask_username()
@@ -135,7 +113,7 @@ class CLI:
         self.flash_message = Menu.logout_message()
         self.controller.logout()
 
-    # ADMIN ACTIONS
+    # CREATE
 
     def _handle_user_creation(self) -> None:
         name, username, password = Prompt.ask_user_data_to_creation()
@@ -146,18 +124,13 @@ class CLI:
 
         self._execute(action)
 
+    # READ
+
     def _handle_list_users(self) -> None:
         user_list = self.controller.list_all_users()
         self.flash_message = Menu.show_all_users(user_list)
 
-    def _handle_delete_user(self) -> None:
-        user_id = Prompt.ask_user_id()
-
-        def action():
-            self.controller.delete_user(user_id)
-            self.flash_message = Menu.user_successfully_deleted_message()
-
-        self._execute(action)
+    # UPDATE
 
     def _handle_update_name(self) -> None:
 
@@ -182,6 +155,37 @@ class CLI:
 
             self.controller.update_name(user_id, new_username)
             self.flash_message = Menu.name_successfully_updated_message()
+
+        self._execute(action)
+
+    def _handle_update_password(self) -> None:
+
+        new_password, confirm_new_password = Prompt.ask_new_password()
+
+        if not self._verify_new_passwords_match(new_password, confirm_new_password):
+            self.flash_message = Menu.password_do_not_match_message()
+            return
+
+        if self._is_new_password_same_as_current(new_password):
+            self.flash_message = Menu.verify_new_password_matches_current_message()
+            return
+
+        def action():
+            self.controller.update_password(
+                self.controller.current_user.id, new_password
+            )
+            self.flash_message = Menu.password_updated_message()
+
+        self._execute(action)
+
+    # DELETE
+
+    def _handle_delete_user(self) -> None:
+        user_id = Prompt.ask_user_id()
+
+        def action():
+            self.controller.delete_user(user_id)
+            self.flash_message = Menu.user_successfully_deleted_message()
 
         self._execute(action)
 
