@@ -22,8 +22,10 @@ class UserService:
         if existing_user:
             raise UserAlreadyExistsError("Username already exists.")
 
-        if len(password) < 6:
-            raise InvalidPasswordError("Password must be at least 6 characters long")
+        if not 8 <= len(password) <= 64:
+            raise InvalidPasswordError(
+                "Password must be between 8 and 64 characters long."
+            )
 
         hashed_password = PasswordService.hash_password(password)
 
@@ -78,8 +80,8 @@ class UserService:
             raise UserNotFoundError("User not found.")
 
         if password is not None:
-            if len(password) < 6:
-                raise ValueError("Password must have at least 6 characters.")
+            if not 8 <= len(password) <= 64:
+                raise ValueError("Password must be between 8 and 64 characters long.")
             password = PasswordService.hash_password(password)
 
         if role is not None:
