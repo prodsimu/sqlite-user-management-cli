@@ -1,3 +1,5 @@
+from xxlimited import new
+
 from app.controllers.app_controller import AppController
 from app.ui.menus import Menu
 from app.ui.prompts import Prompt
@@ -5,6 +7,7 @@ from app.utils.terminal import clear_screen
 
 
 class CLI:
+
     def __init__(self, controller: AppController):
         self.controller = controller
         self.running: bool = True
@@ -59,7 +62,7 @@ class CLI:
             case 2:
                 self._handle_list_users()
             case 3:
-                self._handle_update_name()
+                pass
             case 4:
                 self._handle_delete_user()
 
@@ -110,8 +113,6 @@ class CLI:
                 self.controller.current_user.id, new_password
             )
             self.flash_message = Menu.password_updated_message()
-
-        self._execute(action)
 
     def _handle_login(self) -> None:
         username = Prompt.ask_username()
@@ -184,3 +185,8 @@ class CLI:
             action()
         except Exception as e:
             self.flash_message = Menu.show_error(str(e))
+
+    # PASSWORD VERIFICATION
+
+    def _is_new_password_same_as_current(self, new_password: str) -> bool:
+        return self.controller.is_new_password_same_as_current(new_password)
