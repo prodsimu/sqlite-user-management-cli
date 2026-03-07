@@ -52,3 +52,9 @@ class Prompt:
         new_name = input("New name: ")
 
         return new_name
+
+    @staticmethod
+    def ask_new_username() -> str:
+        new_username = input("New Username: ")
+
+        return new_username
