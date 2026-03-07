@@ -53,6 +53,9 @@ class AppController:
     def list_all_users(self) -> list:
         return self.user_service.list_all_users()
 
+    def user_exists(self, user_id: int) -> None:
+        self.user_service.get_user_by_id(user_id)
+
     # UPDATE USER
 
     def update_name(self, user_id, name) -> None:
