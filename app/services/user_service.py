@@ -93,6 +93,12 @@ class UserService:
             role=role,
         )
 
+    def is_new_password_same_as_current(self, user_id: int, new_password: str) -> bool:
+
+        user = self.get_user_by_id(user_id)
+
+        return PasswordService.verify_password(new_password, user.password)
+
     def change_user_role(
         self,
         current_user_id: int,
