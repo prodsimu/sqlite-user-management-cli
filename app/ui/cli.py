@@ -190,3 +190,11 @@ class CLI:
 
     def _is_new_password_same_as_current(self, new_password: str) -> bool:
         return self.controller.is_new_password_same_as_current(new_password)
+
+    def _verify_new_passwords_match(
+        self, new_password: str, confirm_new_password: str
+    ) -> bool:
+        if new_password != confirm_new_password:
+            return False
+
+        return True
