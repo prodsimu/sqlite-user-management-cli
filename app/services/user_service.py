@@ -83,7 +83,11 @@ class UserService:
             password = PasswordService.hash_password(password)
 
         if role is not None:
-            role = role.value
+            if role not in [role.value for role in UserRole]:
+                raise InvalidUserDataError("Invalid role.")
+
+            if user.role == role:
+                raise InvalidUserDataError("New role is same as current.")
 
         return self.user_repository.update_by_fields(
             user_id=user_id,
@@ -113,9 +117,6 @@ class UserService:
 
         if current_user.role != UserRole.ADMIN.value:
             raise PermissionError("Only admins can change user roles.")
-
-        if new_role not in [role.value for role in UserRole]:
-            raise InvalidUserDataError("Invalid role.")
 
         updated = self.user_repository.update_by_fields(
             user_id=target_user_id,
