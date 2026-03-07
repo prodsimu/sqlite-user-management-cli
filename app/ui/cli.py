@@ -164,6 +164,19 @@ class CLI:
 
         self._execute(action)
 
+    def _handle_update_username(self) -> None:
+
+        def action():
+            user_id = Prompt.ask_user_id()
+            self.controller.user_exists(user_id)
+
+            new_username = Prompt.ask_new_username()
+
+            self.controller.update_name(user_id, new_username)
+            self.flash_message = Menu.name_successfully_updated_message()
+
+        self._execute(action)
+
     # HELPER
 
     def _execute(self, action):
