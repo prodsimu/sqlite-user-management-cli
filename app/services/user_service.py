@@ -65,6 +65,7 @@ class UserService:
     def update_user(
         self,
         user_id: int,
+        current_user_id: int | None = None,
         name: str | None = None,
         username: str | None = None,
         password: str | None = None,
@@ -82,6 +83,10 @@ class UserService:
             password = PasswordService.hash_password(password)
 
         if role is not None:
+
+            if current_user_id == user_id:
+                raise PermissionError("You can't update your own role.")
+
             if role not in [role.value for role in UserRole]:
                 raise InvalidUserDataError("Invalid role.")
 

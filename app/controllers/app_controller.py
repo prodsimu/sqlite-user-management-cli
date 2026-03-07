@@ -68,7 +68,9 @@ class AppController:
         self.user_service.update_user(user_id=user_id, password=password)
 
     def update_role(self, user_id, role) -> None:
-        self.user_service.update_user(user_id=user_id, role=role)
+        self.user_service.update_user(
+            current_user_id=self.current_user.id, user_id=user_id, role=role
+        )
 
     # DELETE USER
 
