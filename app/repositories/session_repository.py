@@ -1,14 +1,15 @@
+from datetime import datetime, timezone
 from typing import Optional
 
-from datetime import datetime, timezone
 from app.database.connection import DatabaseConnection
 from app.domain.session import Session
 from app.domain.session_active import SessionActive
 
 
 class SessionRepository:
-    def __init__(self):
-        self.connection = DatabaseConnection().get_connection()
+
+    def __init__(self, connection=None):
+        self.connection = connection or DatabaseConnection().get_connection()
 
     # CREATE
 
