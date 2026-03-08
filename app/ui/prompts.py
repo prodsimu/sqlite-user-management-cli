@@ -30,7 +30,7 @@ class Prompt:
         return password
 
     @staticmethod
-    def ask_user_data_to_creation() -> str:
+    def ask_user_data_to_creation() -> tuple[str, str, str]:
         name = input("Name: ")
         username = input("Username: ")
         password = input("Password: ")
@@ -56,7 +56,7 @@ class Prompt:
         return new_username
 
     @staticmethod
-    def ask_new_password() -> str:
+    def ask_new_password() -> tuple[str, str]:
         new_password = input("Type the new password: ")
         confirm_new_password = input("Confirm the new password: ")
 
