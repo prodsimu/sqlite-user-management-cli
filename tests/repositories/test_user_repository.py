@@ -30,3 +30,12 @@ def test_user_repository_list_all_users(user_repository):
     assert users_list[0].name == "ignatius"
     assert users_list[1].name == "joseph"
     assert users_list[2].name == "peter"
+
+
+def test_user_repository_update_by_fields(user_repository):
+    user_repository.create("ignatius", "ignatius123", "hashed_password", "user")
+    user_repository.update_by_fields(user_id=1, name="joseph")
+
+    user = user_repository.find_by_id(1)
+
+    assert user.name == "joseph"
