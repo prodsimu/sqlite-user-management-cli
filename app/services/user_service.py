@@ -57,7 +57,7 @@ class UserService:
 
         return user
 
-    def list_all_users(self) -> list:
+    def list_all_users(self) -> list[User]:
         return self.user_repository.list_all_users()
 
     # UPDATE
