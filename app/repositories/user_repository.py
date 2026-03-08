@@ -57,7 +57,7 @@ class UserRepository:
             row["id"], row["name"], row["username"], row["password"], row["role"]
         )
 
-    def list_all_users(self) -> list:
+    def list_all_users(self) -> list[User]:
         cursor = self.connection.execute(
             """
         SELECT * FROM users;
