@@ -50,7 +50,7 @@ class AppController:
 
     # READ
 
-    def list_all_users(self) -> list:
+    def list_all_users(self) -> list[User]:
         return self.user_service.list_all_users()
 
     def user_exists(self, user_id: int) -> None:
