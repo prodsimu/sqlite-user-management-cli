@@ -2,6 +2,11 @@ import sqlite3
 
 import pytest
 
+from app.repositories.session_repository import SessionRepository
+from app.repositories.user_repository import UserRepository
+from app.services.session_service import SessionService
+from app.services.user_service import UserService
+
 
 @pytest.fixture
 def test_db():
@@ -36,3 +41,23 @@ def test_db():
     yield conn
 
     conn.close()
+
+
+@pytest.fixture
+def user_repository(test_db):
+    return UserRepository(test_db)
+
+
+@pytest.fixture
+def session_repository(test_db):
+    return SessionRepository(test_db)
+
+
+@pytest.fixture
+def user_service(user_repository):
+    return UserService(user_repository)
+
+
+@pytest.fixture
+def session_service(session_repository):
+    return SessionService(session_repository)
