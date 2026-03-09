@@ -39,3 +39,14 @@ def test_user_service_get_user_by_id(user_service):
     assert user.name == "Ignatius"
     assert user.username == "ignatius123"
     assert user.role == UserRole.USER.value
+
+
+def test_user_service_list_all_users(user_service):
+    user_service.create("Ignatius", "ignatius123", "password123")
+    user_service.create_admin("Admin", "admin", "admin123")
+
+    users = user_service.list_all_users()
+
+    assert len(users) == 2
+    assert users[0].username == "ignatius123"
+    assert users[1].username == "admin"
