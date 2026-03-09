@@ -76,3 +76,11 @@ def test_user_service_get_nonexistent_user_by_username(user_service):
         assert False, "Expected UserNotFoundError"
     except Exception as e:
         assert str(e) == "User not found."
+
+
+def test_user_service_get_nonexistent_user_by_id(user_service):
+    try:
+        user_service.get_user_by_id(999)
+        assert False, "Expected UserNotFoundError"
+    except Exception as e:
+        assert str(e) == "User not found."
