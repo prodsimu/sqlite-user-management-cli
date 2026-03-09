@@ -60,3 +60,11 @@ def test_user_service_create_duplicate_username(user_service):
         assert False, "Expected UserAlreadyExistsError"
     except Exception as e:
         assert str(e) == "Username already exists."
+
+
+def test_user_service_create_invalid_password(user_service):
+    try:
+        user_service.create("Ignatius", "ignatius123", "short")
+        assert False, "Expected InvalidPasswordError"
+    except Exception as e:
+        assert str(e) == "Password must be between 8 and 64 characters long."
