@@ -29,3 +29,13 @@ def test_user_service_get_user_by_username(user_service):
     assert user.name == "Ignatius"
     assert user.username == "ignatius123"
     assert user.role == UserRole.USER.value
+
+
+def test_user_service_get_user_by_id(user_service):
+    created_user = user_service.create("Ignatius", "ignatius123", "password123")
+    user = user_service.get_user_by_id(created_user.id)
+
+    assert user is not None
+    assert user.name == "Ignatius"
+    assert user.username == "ignatius123"
+    assert user.role == UserRole.USER.value
