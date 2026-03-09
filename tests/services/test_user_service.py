@@ -50,3 +50,13 @@ def test_user_service_list_all_users(user_service):
     assert len(users) == 2
     assert users[0].username == "ignatius123"
     assert users[1].username == "admin"
+
+
+def test_user_service_create_duplicate_username(user_service):
+    user_service.create("Ignatius", "ignatius123", "password123")
+
+    try:
+        user_service.create("Another Ignatius", "ignatius123", "password456")
+        assert False, "Expected UserAlreadyExistsError"
+    except Exception as e:
+        assert str(e) == "Username already exists."
