@@ -175,3 +175,13 @@ def test_user_service_update_user_own_role(user_service):
         assert False, "Expected PermissionError"
     except PermissionError as e:
         assert str(e) == "You can't update your own role."
+
+
+def test_user_service_is_new_password_same_as_current(user_service):
+    user1 = user_service.create("Ignatius", "ignatius123", "password123")
+    user2 = user_service.create("Joseph", "joseph123", "password123")
+
+    assert user_service.is_new_password_same_as_current(user1.id, "password123") is True
+    assert (
+        user_service.is_new_password_same_as_current(user2.id, "password999") is False
+    )
