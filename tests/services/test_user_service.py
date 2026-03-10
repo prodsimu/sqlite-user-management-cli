@@ -133,3 +133,13 @@ def test_user_service_update_user_duplicate_username(user_service):
         assert False, "Expected UserAlreadyExistsError"
     except UserAlreadyExistsError as e:
         assert str(e) == "Username already exists."
+
+
+def test_user_service_update_user_invalid_password(user_service):
+    user = user_service.create("Ignatius", "ignatius123", "password123")
+
+    try:
+        user_service.update_user(user_id=user.id, password="short")
+        assert False, "Expected ValueError"
+    except ValueError as e:
+        assert str(e) == "Password must be between 8 and 64 characters long."
