@@ -24,3 +24,15 @@ def test_session_service_create_session_existing_active(user_service, session_se
     assert active_session is not None
     assert active_session.id == second_session.id
     assert active_session.active == SessionActive.ACTIVE.value
+
+
+def test_session_service_deactivate_session_active(user_service, session_service):
+    user = user_service.create("Test User", "testuser", "password123")
+
+    session = session_service.create_session(user.id)
+    assert session.active == SessionActive.ACTIVE.value
+
+    session_service.deactivate_session(session.id)
+
+    active_session = session_service.session_repository.get_active_by_user(user.id)
+    assert active_session is None
