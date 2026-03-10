@@ -208,3 +208,13 @@ def test_user_service_delete_own_user(user_service):
         assert False, "Expected PermissionError"
     except PermissionError as e:
         assert str(e) == "You can't delete your own user"
+
+
+def test_user_service_delete_nonexistent_user(user_service):
+    admin = user_service.create_admin("Admin", "admin", "admin123")
+
+    try:
+        user_service.delete_user(current_user_id=admin.id, user_id=999)
+        assert False, "Expected UserNotFoundError"
+    except UserNotFoundError as e:
+        assert str(e) == "User not found."
