@@ -1,3 +1,5 @@
+from functools import wraps
+
 from app.controllers.app_controller import AppController
 from app.ui.menus import Menu
 from app.ui.prompts import Prompt
@@ -97,17 +99,27 @@ class CLI:
             print(self.flash_message, end="")
             self.flash_message = None
 
+    # HELPER DECORATOR
+
+    def _execute(func):
+        @wraps(func)
+        def wrapper(self, *args, **kwargs):
+            try:
+                return func(self, *args, **kwargs)
+            except Exception as e:
+                self.flash_message = Menu.show_error(str(e))
+
+        return wrapper
+
     # AUTH
 
+    @_execute
     def _handle_login(self) -> None:
         username = Prompt.ask_username()
         password = Prompt.ask_password()
 
-        def action():
-            self.controller.login(username, password)
-            self.flash_message = Menu.logged_in_message()
-
-        self._execute(action)
+        self.controller.login(username, password)
+        self.flash_message = Menu.logged_in_message()
 
     def _handle_logout(self) -> None:
         self.flash_message = Menu.logout_message()
@@ -115,14 +127,12 @@ class CLI:
 
     # CREATE
 
+    @_execute
     def _handle_user_creation(self) -> None:
         name, username, password = Prompt.ask_user_data_to_creation()
 
-        def action():
-            self.controller.create_user(name, username, password)
-            self.flash_message = Menu.user_created_message()
-
-        self._execute(action)
+        self.controller.create_user(name, username, password)
+        self.flash_message = Menu.user_created_message()
 
     # READ
 
@@ -132,34 +142,28 @@ class CLI:
 
     # UPDATE
 
+    @_execute
     def _handle_update_name(self) -> None:
+        user_id = Prompt.ask_user_id()
+        self.controller.user_exists(user_id)
 
-        def action():
-            user_id = Prompt.ask_user_id()
-            self.controller.user_exists(user_id)
+        new_name = Prompt.ask_new_name()
 
-            new_name = Prompt.ask_new_name()
+        self.controller.update_name(user_id, new_name)
+        self.flash_message = Menu.name_updated_message()
 
-            self.controller.update_name(user_id, new_name)
-            self.flash_message = Menu.name_updated_message()
-
-        self._execute(action)
-
+    @_execute
     def _handle_update_username(self) -> None:
+        user_id = Prompt.ask_user_id()
+        self.controller.user_exists(user_id)
 
-        def action():
-            user_id = Prompt.ask_user_id()
-            self.controller.user_exists(user_id)
+        new_username = Prompt.ask_new_username()
 
-            new_username = Prompt.ask_new_username()
+        self.controller.update_username(user_id, new_username)
+        self.flash_message = Menu.username_updated_message()
 
-            self.controller.update_username(user_id, new_username)
-            self.flash_message = Menu.username_updated_message()
-
-        self._execute(action)
-
+    @_execute
     def _handle_update_password(self) -> None:
-
         new_password, confirm_new_password = Prompt.ask_new_password()
 
         if not self._verify_new_passwords_match(new_password, confirm_new_password):
@@ -170,25 +174,18 @@ class CLI:
             self.flash_message = Menu.is_new_password_same_as_current_message()
             return
 
-        def action():
-            self.controller.update_password(
-                self.controller.current_user.id, new_password
-            )
-            self.flash_message = Menu.password_updated_message()
+        self.controller.update_password(self.controller.current_user.id, new_password)
+        self.flash_message = Menu.password_updated_message()
 
-        self._execute(action)
-
+    @_execute
     def _handle_update_role(self) -> None:
-        def action():
-            user_id = Prompt.ask_user_id()
-            self.controller.user_exists(user_id)
+        user_id = Prompt.ask_user_id()
+        self.controller.user_exists(user_id)
 
-            new_role = Prompt.ask_new_role()
+        new_role = Prompt.ask_new_role()
 
-            self.controller.update_role(user_id, new_role)
-            self.flash_message = Menu.role_updated_message()
-
-        self._execute(action)
+        self.controller.update_role(user_id, new_role)
+        self.flash_message = Menu.role_updated_message()
 
     def _handle_update_flow(self) -> None:
 
@@ -211,22 +208,11 @@ class CLI:
 
     # DELETE
 
+    @_execute
     def _handle_delete_user(self) -> None:
         user_id = Prompt.ask_user_id()
-
-        def action():
-            self.controller.delete_user(user_id)
-            self.flash_message = Menu.user_deleted_message()
-
-        self._execute(action)
-
-    # HELPER
-
-    def _execute(self, action):
-        try:
-            action()
-        except Exception as e:
-            self.flash_message = Menu.show_error(str(e))
+        self.controller.delete_user(user_id)
+        self.flash_message = Menu.user_deleted_message()
 
     # PASSWORD VERIFICATION
 
